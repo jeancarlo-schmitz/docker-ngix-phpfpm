@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  nginx:
+    build: ./nginx
+    container_name: nginx_backend
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/www/meuprojeto/public:/var/www/html/public
+    depends_on:
+      - php
+    restart: unless-stopped
+
+  php:
+    build: ./php
+    container_name: php_backend
+    volumes:
+      - /var/www/meuprojeto/public:/var/www/html/public
+    restart: unless-stopped
