@@ -14,7 +14,7 @@ services:
     restart: unless-stopped
 
   php:
-    build: ./php
+    build: ./phpfpm
     container_name: php_backend
     volumes:
       - /var/www/meuprojeto/public:/var/www/html/public
