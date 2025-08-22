@@ -8,7 +8,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - /var/www/teste_php:/var/www/html/public
+      - /var/www/html/teste_php:/var/www/html/public
     depends_on:
       - php
     restart: unless-stopped
@@ -17,5 +17,5 @@ services:
     build: ./phpfpm
     container_name: php_backend
     volumes:
-      - /var/www/teste_php:/var/www/html/public
+      - /var/www/html/teste_php:/var/www/html/public
     restart: unless-stopped
