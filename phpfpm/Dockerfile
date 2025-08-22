@@ -1,31 +1,15 @@
-# # php/Dockerfile
-# FROM php:8.3-fpm
+FROM php:8.3-fpm-bookworm
 
-# # Instalar dependências do sistema necessárias para compilar extensões
-# RUN rm -rf /var/lib/apt/lists/* \
-#     && apt-get update && apt-get install -y --no-install-recommends \
-#         libpq-dev \
-#         libzip-dev \
-#         unzip \
-#         git \
-#         gcc \
-#         make \
-#         pkg-config \
-#         ca-certificates \
-#     && docker-php-ext-install pdo_pgsql \
-#     && apt-get clean \
-#     && rm -rf /var/lib/apt/lists/*
-
-# # Copiar php.ini customizado
-# COPY php.ini /usr/local/etc/php/php.ini
-
-# WORKDIR /var/www/html
-
-FROM php:8.2-fpm
-
-# Substituir fontes para repositórios oficiais
-RUN sed -i 's|http://deb.debian.org/debian|http://deb.debian.org/debian-archive|g' /etc/apt/sources.list \
-    && apt-get update && apt-get install -y --no-install-recommends \
+# Ajustar repositórios para https + instalar dependências
+RUN printf '%s\n' \
+    "deb https://deb.debian.org/debian bookworm main contrib non-free-firmware" \
+    "deb https://deb.debian.org/debian-security bookworm-security main contrib non-free-firmware" \
+    "deb https://deb.debian.org/debian bookworm-updates main contrib non-free-firmware" \
+    > /etc/apt/sources.list \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+        apt-transport-https \
+        ca-certificates \
         libpq-dev \
         libzip-dev \
         unzip \
@@ -33,9 +17,12 @@ RUN sed -i 's|http://deb.debian.org/debian|http://deb.debian.org/debian-archive|
         gcc \
         make \
         pkg-config \
-        ca-certificates \
     && docker-php-ext-install pdo_pgsql \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Copiar php.ini customizado
+COPY php.ini /usr/local/etc/php/php.ini
+
+# Definir diretório de trabalho
 WORKDIR /var/www/html

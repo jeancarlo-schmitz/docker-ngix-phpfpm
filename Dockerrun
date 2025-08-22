@@ -1,1 +1,10 @@
-docker-compose up -d --build
+docker-compose down
+
+# Forçar remoção das imagens antigas relacionadas ao projeto
+docker-compose build --no-cache
+
+# Subir os containers novamente em background
+docker-compose up -d
+
+# Mostrar status dos containers
+docker ps
